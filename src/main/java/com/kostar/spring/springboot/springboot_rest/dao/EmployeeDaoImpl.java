@@ -29,6 +29,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 //        return allEmployees;
         Query query = entityManager.createQuery("from Employee");
         List<Employee> allEmployees = query.getResultList();
+        return allEmployees;
 
     }
 
@@ -38,7 +39,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 //        Session session = entityManager.unwrap(Session.class);
 //        session.saveOrUpdate(employee);
 
-        
+        Employee newEmployee = entityManager.merge(employee);
+        employee.setId(newEmployee.getId());
     }
 
     @Override
@@ -54,8 +56,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public void deleteEmployee(int id) {
-        Session session = entityManager.unwrap(Session.class);
-        Query<Employee> query = session.createQuery("delete from Employee where id =:employeeId");
+//        Session session = entityManager.unwrap(Session.class);
+//        Query<Employee> query = session.createQuery("delete from Employee where id =:employeeId");
+//        query.setParameter("employeeId", id);
+//        query.executeUpdate();
+        Query query = entityManager.createQuery("delete from Employee where id =:employeeId");
         query.setParameter("employeeId", id);
         query.executeUpdate();
 
